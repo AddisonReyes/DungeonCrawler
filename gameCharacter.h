@@ -5,7 +5,7 @@
 
 class GameCharacter
 {
-private:
+protected:
     std::string name;
     int maxHealth;
     int currentHealth;
