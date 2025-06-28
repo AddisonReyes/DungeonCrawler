@@ -1,12 +1,12 @@
 #include "gameCharacter.h"
-#include "room.cpp"
+#include "room.h"
 
 #ifndef PLAYER_H
 #define PLAYER_H
 
 class Player : public GameCharacter
 {
-private:
+protected:
     room *previousRoom;
 
 public:

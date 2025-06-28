@@ -1,4 +1,4 @@
-#include "room.cpp"
+#include "room.h"
 
 #ifndef DUNGEON_H
 #define DUNGEON_H

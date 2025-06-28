@@ -1,5 +1,5 @@
-#ifndef ROOM_CPP
-#define ROOM_CPP
+#ifndef ROOM_H
+#define ROOM_H
 
 struct room
 {
