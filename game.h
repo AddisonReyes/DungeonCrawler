@@ -16,7 +16,13 @@ public:
     bool isGameOver;
 
     Game(Player *, Dungeon *);
+
     std::vector<std::string> getMovementActions();
+    void printActions(std::vector<std::string>);
+    void handleMovementActions();
+    void initiateRoomSquence();
+    void handleEnemyActions();
+    void engageInCombat();
 };
 
 #endif

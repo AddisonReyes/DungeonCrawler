@@ -7,6 +7,10 @@ int main()
     Player player = Player("Dakotah", 100, 10);
     Game game(&player, &dungeon);
 
-    std::cout << "test1";
+    while (!game.isGameOver)
+    {
+        game.initiateRoomSquence();
+    }
+
     return 0;
 }
