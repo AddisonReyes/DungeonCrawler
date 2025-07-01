@@ -12,9 +12,22 @@ Game::Game(Player *_player, Dungeon *_dungeon) : player(_player), dungeon(_dunge
 
 void Game::initiateRoomSquence()
 {
+    room *room = player->currentRoom;
+    if (room->row == 0 && room->col == 0 && room->enemies.empty())
+    {
+        std::cout << "Congratulations, you have reached the exit and are free of the dungeon!"
+                  << " Farewell " << player->getName() << "!\n";
+        isGameOver = true;
+        return;
+    }
+
     if (!player->currentRoom->enemies.empty())
     {
         handleEnemyActions();
+    }
+    else if (!player->currentRoom->items.empty())
+    {
+        handleItemActions();
     }
     else
     {
@@ -112,10 +125,35 @@ void Game::handleEnemyActions()
     {
         player->retreat();
     }
+}
 
-    std::cout << "You are now in the room "
-              << std::endl
-              << std::endl;
+void Game::handleItemActions()
+{
+    item item = player->currentRoom->items[0];
+    std::cout << "You find a " << item.name
+              << " in this room! What would you like to do?\n";
+    std::vector<std::string> actions;
+    actions.push_back("Pick item up");
+    actions.push_back("Ignore item");
+    printActions(actions);
+
+    int input;
+    std::cout << "Option: ";
+    std::cin >> input;
+    std::string chosenAction = actions[input - 1];
+
+    if (chosenAction == "Pick item up")
+    {
+        player->pickUpItem(item);
+        std::cout << "\nYou picked up a " << item.name
+                  << ". Your health is now " << player->getHealth()
+                  << " and your damage is now " << player->getDamage() << ".\n";
+        player->currentRoom->items.clear();
+    }
+    else
+    {
+        handleMovementActions();
+    }
 }
 
 void Game::printActions(std::vector<std::string> actions)
@@ -132,7 +170,7 @@ void Game::engageInCombat()
     while (true)
     {
         enemy->takeDamage(player->getDamage());
-        std::cout << "You strike the " << enemy->getName()
+        std::cout << "\nYou strike the " << enemy->getName()
                   << ", dealing " << player->getDamage() << " damage.\n";
 
         if (!enemy->checkIfAlive())
@@ -144,7 +182,7 @@ void Game::engageInCombat()
 
         player->takeDamage(enemy->getDamage());
         std::cout << "You take " << enemy->getDamage() << " damage."
-                  << " You now have" << player->getHealth() << " health.\n";
+                  << " You now have " << player->getHealth() << " health.\n";
 
         if (!player->checkIfAlive())
         {
@@ -153,9 +191,9 @@ void Game::engageInCombat()
             return;
         }
 
-        std::cout << "=What would you like to do?\n";
+        std::cout << "What would you like to do?\n";
         std::vector<std::string> actions;
-        actions.push_back("Engage enemy");
+        actions.push_back("Keep fighting");
         actions.push_back("Retreat");
         printActions(actions);
 
@@ -164,13 +202,10 @@ void Game::engageInCombat()
         std::cin >> input;
         std::string chosenAction = actions[input - 1];
 
-        if (chosenAction == "Engage enemy")
-        {
-            engageInCombat();
-        }
-        else
+        if (chosenAction != "Keep fighting")
         {
             player->retreat();
+            return;
         }
     }
 }

@@ -16,6 +16,7 @@ public:
     void heal(int);
     void moveToRoom(room *);
     void retreat();
+    void pickUpItem(item);
 };
 
 #endif

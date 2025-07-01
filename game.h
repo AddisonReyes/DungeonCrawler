@@ -22,6 +22,7 @@ public:
     void handleMovementActions();
     void initiateRoomSquence();
     void handleEnemyActions();
+    void handleItemActions();
     void engageInCombat();
 };
 
